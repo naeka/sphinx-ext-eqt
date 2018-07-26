@@ -7,7 +7,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='sphinx-ext-eqt',
-    version='1.0',
+    version='1.2',
     author='Naeka',
     author_email='contact@naeka.fr',
     description="A sphinx extension to integrate multiple choices "
@@ -16,6 +16,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://github.com/naeka/sphinx-ext-eqt',
     packages=setuptools.find_packages(),
+    include_package_data=True,
     data_files=[
         ('_static', [
             'eqt_ext/_static/css/eqt.css',
