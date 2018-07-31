@@ -37,7 +37,7 @@ class EqtAnswerType(nodes.General, nodes.Element):
 
 def visit_eqt_answer_type_node(self, node):
     """
-    Function executed when the node representing the :eqt:`XXX` is visited
+    Function executed when the node representing the :eqt:`XXX` is visited.
     """
     # Need to check for the MODE!
     if node['type'] == 'eqt' or node['type'] == 'eqt-mc':
@@ -58,6 +58,10 @@ def visit_eqt_answer_type_node(self, node):
                 <input type="text" name="answer" value="" data-answer="{}"/>
             </div>
         """.format(node['content']))
+    raise nodes.SkipNode
+
+
+def non_html_visit_node(self, node):
     raise nodes.SkipNode
 
 
@@ -185,10 +189,6 @@ def eqt_answer(name, rawtext, text, lineno, inliner, options=None,
     # Unused parameters
     del name, rawtext, lineno, content
 
-    # This role has only effect when in HTML mode.
-    if inliner.document.settings.env.app.builder.format != 'html':
-        return
-
     # Get the question type (if none, raise an exception).
     config = inliner.document.settings.env.config
     question_type = config.config_values.get('eqt-question-type')
@@ -217,10 +217,6 @@ def explanation_role(name, rawtext, text, lineno, inliner, options={},
     """
     # Unused parameters
     del name, rawtext, lineno, content
-
-    # This role has only effect when in HTML mode.
-    if inliner.document.settings.env.app.builder.format != 'html':
-        return
 
     # Get the question type (if none, raise an exception).
     config = inliner.document.settings.env.config
@@ -272,7 +268,14 @@ def visit_explanation_node(self, node):
 
 
 def setup(app):
-    app.add_node(Eqt, html=(visit_eqt_node, depart_eqt_node))
+    app.add_node(
+        Eqt,
+        html=(visit_eqt_node, depart_eqt_node),
+        latex=(non_html_visit_node, None),
+        text=(non_html_visit_node, None),
+        man=(non_html_visit_node, None),
+        texinfo=(non_html_visit_node, None)
+    )
 
     app.add_directive("eqt", EQuestionDirective)
     app.add_directive("eqt-fib", EQuestionDirective)
@@ -282,8 +285,22 @@ def setup(app):
     roles.register_local_role('eqt', eqt_answer)
     roles.register_local_role('expl', explanation_role)
 
-    app.add_node(EqtAnswerType, html=(visit_eqt_answer_type_node, None))
-    app.add_node(Explanation, html=(visit_explanation_node, None))
+    app.add_node(
+        EqtAnswerType,
+        html=(visit_eqt_answer_type_node, None),
+        latex=(non_html_visit_node, None),
+        text=(non_html_visit_node, None),
+        man=(non_html_visit_node, None),
+        texinfo=(non_html_visit_node, None)
+    )
+    app.add_node(
+        Explanation,
+        html=(visit_explanation_node, None),
+        latex=(non_html_visit_node, None),
+        text=(non_html_visit_node, None),
+        man=(non_html_visit_node, None),
+        texinfo=(non_html_visit_node, None)
+    )
 
     app.add_stylesheet('css/eqt.css')
     app.add_javascript('js/eqt.js')
