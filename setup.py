@@ -7,7 +7,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='sphinx-ext-eqt',
-    version='1.3',
+    version='1.4',
     author='Naeka',
     author_email='contact@naeka.fr',
     description="A sphinx extension to integrate multiple choices "
