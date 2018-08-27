@@ -70,20 +70,18 @@ function grade() {
     }
 
     /* Update element visibility
-     * Show all explanations if answer is correct.
-     * Only show checked field explanations if answer is incorrect
+     * Show checked field explanations
      */
     if (answer === true) {
         eqtBlock.addClass('success');
         eqtBlock.find(".eqt-block-actions .result-icon").text("Correct !");
-        eqtBlock.find(".tip.expl").show();
         evaluate_labels(eqtBlock, false);
     } else {
         eqtBlock.addClass('errored');
         eqtBlock.find('.eqt-block-actions .result-icon').text("Incorrect !");
-        eqtBlock.find('form > ol.eqt-answer-list > li input:checked').parent().find('.tip.expl').show();
         evaluate_labels(eqtBlock, true);
     }
+    eqtBlock.find('form > ol.eqt-answer-list > li input:checked').parent().find('.tip.expl').show();
 
     // Disable inputs
     eqtBlock.find('form input').prop('disabled', true);
